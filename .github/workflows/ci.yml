@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Frontend CI/CD
 
 on:
   push:
@@ -20,7 +20,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify project files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          test -f Dockerfile
+
       - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -28,48 +36,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/dissaanayake-23/frontend-app:latest .
+        run: docker build -t ghcr.io/dissaanayake-23/frontend-app:latest .
 
-      - name: Push Docker image
+      - name: Push Docker image to GHCR
         if: github.event_name == 'push'
-        run: |
-          docker push ghcr.io/dissaanayake-23/frontend-app:latest
-
-      - name: Verify files
-        run: |
-          test -f index.html
-          test -f style.css
-          test -f script.js
-          test -f Dockerfile
+        run: docker push ghcr.io/dissaanayake-23/frontend-app:latest
 
       - name: CI completed
-        run: echo "Frontend Docker build and GHCR push completed successfully."
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build Docker image
-        run: docker build -t frontend-app .
-
-      - name: Verify files
-        run: |
-          test -f index.html
-          test -f style.css
-          test -f script.js
-          test -f Dockerfile
-
-      - name: CI completed
-        run: echo "Frontend Docker build completed successfully."
+        run: echo "Frontend CI/CD completed successfully."
