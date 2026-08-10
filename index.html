@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="A frontend web application containerized using Docker and served with Nginx on Ubuntu Linux."
+    >
+
+    <title>Docker Containerization</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <a class="brand" href="#" aria-label="Docker Containerization home">
+
+            <span class="brand-logo" aria-hidden="true">
+
+                <svg
+                    viewBox="0 0 48 48"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <rect x="10" y="13" width="7" height="7" rx="1"></rect>
+                    <rect x="19" y="13" width="7" height="7" rx="1"></rect>
+                    <rect x="28" y="13" width="7" height="7" rx="1"></rect>
+
+                    <rect x="10" y="22" width="7" height="7" rx="1"></rect>
+                    <rect x="19" y="22" width="7" height="7" rx="1"></rect>
+                    <rect x="28" y="22" width="7" height="7" rx="1"></rect>
+
+                    <path
+                        d="M6 31H36C39.5 31 42 29 43.5 26.5C44.5 30.5 42.5 36 38 39C34.5 41.5 30 42 25 42H17C10 42 6 37.5 6 31Z"
+                    ></path>
+                </svg>
+
+            </span>
+
+            <span class="brand-text">
+                Docker Containerization
+            </span>
+
+        </a>
+
+    </header>
+
+
+    <main class="hero">
+
+        <section class="hero-content">
+
+            <span class="eyebrow">
+                Docker • Nginx • Ubuntu
+            </span>
+
+            <h1>
+                Build.
+                <span>Containerize.</span>
+                Deploy.
+            </h1>
+
+            <p class="description">
+                A frontend web application containerized using Docker
+                and served with Nginx on Ubuntu Linux, demonstrating
+                a practical deployment workflow.
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    id="launchButton"
+                    class="primary-button"
+                    type="button"
+                >
+                    Run Container
+                </button>
+
+                <a
+                    class="secondary-button"
+                    href="#stack"
+                >
+                    View Stack
+                </a>
+
+            </div>
+
+            <p
+                id="message"
+                class="message"
+                aria-live="polite"
+            ></p>
+
+            <div class="stack" id="stack">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>Docker</span>
+                <span>Nginx</span>
+                <span>Ubuntu</span>
+            </div>
+
+        </section>
+
+
+        <section
+            class="deployment-card"
+            aria-label="Docker deployment terminal"
+        >
+
+            <div class="card-header">
+
+                <div class="window-dots" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <span class="terminal-name">
+                    deployment-terminal
+                </span>
+
+            </div>
+
+
+            <div class="terminal">
+
+                <div class="command-group">
+
+                    <p class="command">
+                        <span class="prompt">$</span>
+                        docker build -t frontend-app .
+                    </p>
+
+                    <p class="success">
+                        ✓ Image built successfully
+                    </p>
+
+                </div>
+
+
+                <div class="command-group">
+
+                    <p class="command">
+                        <span class="prompt">$</span>
+                        docker run -d -p 8080:80 frontend-app
+                    </p>
+
+                    <p class="success">
+                        ✓ Container is running
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="deployment-status">
+
+                <div class="status-content">
+
+                    <span class="status-label">
+                        Deployment Status
+                    </span>
+
+                    <h2>Application Online</h2>
+
+                    <p id="deploymentAddress">
+                        localhost:8080
+                    </p>
+
+                </div>
+
+
+                <span class="online-status">
+                    <i></i>
+                    Online
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        Built as a hands-on Docker and Nginx deployment project.
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
