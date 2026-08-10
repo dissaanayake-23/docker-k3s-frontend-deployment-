@@ -8,6 +8,51 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/dissaanayake-23/frontend-app:latest .
+
+      - name: Push Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker push ghcr.io/dissaanayake-23/frontend-app:latest
+
+      - name: Verify files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          test -f Dockerfile
+
+      - name: CI completed
+        run: echo "Frontend Docker build and GHCR push completed successfully."
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
