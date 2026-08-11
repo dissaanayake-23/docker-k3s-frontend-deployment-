@@ -248,6 +248,37 @@ This allows the container image to be stored in a remote registry and used by th
 - Automated Docker image build and publishing
 
 ---
+---
+
+## 📸 Project Screenshots
+
+### Frontend Application - Version 2
+
+![Frontend V2](screenshots/01-frontend-v2.png)
+
+### Kubernetes Pods
+
+Three frontend replicas running successfully in the K3s cluster.
+
+![Kubernetes Pods](screenshots/02-kubernetes-pods.png)
+
+### Kubernetes Deployment and NodePort Service
+
+The deployment maintains three replicas and exposes the application using NodePort `30080`.
+
+![Deployment and Service](screenshots/03-deployment-service.png)
+
+### GitHub Actions CI
+
+Successful GitHub Actions workflow for building and publishing the Docker image.
+
+![GitHub Actions](screenshots/04-github-actions.png)
+
+### GitHub Repository
+
+Project source code, Kubernetes configuration, Dockerfile, and documentation.
+
+![GitHub Repository](screenshots/05-github-repository.png)
 
 ## 📚 What I Learned
 
