@@ -1,14 +1,16 @@
 # Docker & K3s Frontend Deployment
 
-A hands-on DevOps project demonstrating how a frontend web application can be containerized with Docker, deployed on a lightweight Kubernetes cluster using K3s, and integrated with GitHub Actions and GitHub Container Registry (GHCR).
+## 📌 Project Overview
 
-## 🚀 Project Overview
+This project demonstrates a practical DevOps workflow for containerizing and deploying a frontend web application using Docker and Kubernetes.
 
-This project started with a simple frontend application built using HTML, CSS, and JavaScript.
+The frontend application is built using HTML, CSS, and JavaScript, served through Nginx, and packaged as a Docker image.
 
-The application is served using Nginx and packaged as a Docker image. It is then deployed to a K3s Kubernetes cluster running inside an Ubuntu Virtual Machine.
+The application is deployed to a lightweight Kubernetes cluster using K3s running inside an Ubuntu Virtual Machine.
 
-GitHub Actions is used to automatically build the Docker image and publish it to GitHub Container Registry (GHCR).
+GitHub Actions is also used to build the Docker image and publish it to GitHub Container Registry (GHCR).
+
+---
 
 ## 🛠 Technologies Used
 
@@ -25,6 +27,8 @@ GitHub Actions is used to automatically build the Docker image and publish it to
 - GitHub Container Registry (GHCR)
 - VirtualBox
 
+---
+
 ## 🏗 Architecture
 
 ```text
@@ -40,9 +44,9 @@ GitHub Actions
     v
 GitHub Container Registry (GHCR)
     |
-    | Pull Image
+    | Pull Docker Image
     v
-K3s / Kubernetes
+K3s / Kubernetes Cluster
     |
     v
 Kubernetes Deployment
@@ -57,11 +61,13 @@ Pod 1    Pod 2    Pod 3
     Frontend Website
 ```
 
-## 🐳 Docker
+---
+
+## 🐳 Docker Containerization
 
 The frontend application is served using Nginx inside a Docker container.
 
-Build the image:
+Build the Docker image:
 
 ```bash
 docker build -t frontend-app .
@@ -73,14 +79,22 @@ Run the container:
 docker run -d -p 8080:80 --name myfrontend frontend-app
 ```
 
-## ☸️ Kubernetes with K3s
+---
 
-The application is deployed to a lightweight Kubernetes cluster using K3s.
+## ☸️ Kubernetes Deployment with K3s
+
+The containerized application is deployed to a lightweight Kubernetes cluster using K3s.
 
 Deploy the application:
 
 ```bash
 kubectl apply -f deployment.yaml
+```
+
+Check the deployment:
+
+```bash
+kubectl get deployment
 ```
 
 Check the pods:
@@ -95,61 +109,150 @@ Check the service:
 kubectl get svc
 ```
 
-## 📈 Scaling
+The application is exposed using a Kubernetes NodePort service on port:
 
-The deployment was scaled to three replicas:
+```text
+30080
+```
+
+---
+
+## 📈 Application Scaling
+
+The deployment runs three replicas of the frontend application.
 
 ```bash
 kubectl scale deployment frontend-deployment --replicas=3
 ```
 
-Kubernetes then runs three instances of the frontend application.
+This allows Kubernetes to maintain multiple running instances of the application.
 
-## ♻️ Self-Healing Test
+---
 
-Self-healing was tested by manually deleting one of the running pods.
+## 🔄 Rolling Updates
+
+A second version of the frontend application was created and deployed using a Kubernetes rolling update.
+
+The Docker image was versioned as:
+
+```text
+frontend-app:v2
+```
+
+The deployment was updated without stopping all running application instances at once.
+
+The rollout was monitored using:
+
+```bash
+kubectl rollout status deployment/frontend-deployment
+```
+
+This demonstrated how Kubernetes can gradually replace old application pods with a new version while maintaining service availability.
+
+---
+
+## ❤️ Readiness and Liveness Probes
+
+Health checks were configured in the Kubernetes deployment.
+
+### Readiness Probe
+
+The readiness probe verifies that a container is ready before Kubernetes sends traffic to it.
+
+### Liveness Probe
+
+The liveness probe checks whether the application remains healthy while running.
+
+The liveness probe was tested by temporarily configuring an invalid health-check path.
+
+Kubernetes detected the failed health checks and restarted the affected containers.
+
+The correct health-check path was then restored.
+
+---
+
+## ♻️ Pod Replacement Test
+
+Kubernetes desired-state reconciliation was tested by manually deleting one running pod.
 
 ```bash
 kubectl delete pod <pod-name>
 ```
 
-Kubernetes automatically created a replacement pod to maintain the desired number of replicas.
+The Deployment automatically created a replacement pod to maintain the configured three replicas.
+
+---
+
+## ⚡ Resource Management
+
+CPU and memory requests and limits were configured for the frontend containers.
+
+```yaml
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "200m"
+    memory: "128Mi"
+```
+
+This demonstrates basic Kubernetes resource management.
+
+---
 
 ## ⚙️ CI with GitHub Actions
 
-GitHub Actions runs automatically when changes are pushed to the `main` branch.
+GitHub Actions is configured to run when changes are pushed to the main branch.
 
 The workflow:
 
 1. Checks out the source code
 2. Verifies the required project files
-3. Logs in to GHCR
+3. Logs in to GitHub Container Registry
 4. Builds the Docker image
 5. Pushes the Docker image to GHCR
 
+---
+
 ## 📦 GitHub Container Registry
 
-The Docker image is published as:
+The Docker image is published to GitHub Container Registry:
 
 ```text
 ghcr.io/dissaanayake-23/frontend-app:latest
 ```
 
-The K3s deployment pulls this image from GHCR.
+This allows the container image to be stored in a remote registry and used by the deployment workflow.
+
+---
 
 ## ✅ Features Demonstrated
 
 - Docker containerization
 - Nginx web hosting
-- Kubernetes deployment using K3s
+- Ubuntu Linux environment
+- K3s Kubernetes cluster
+- Kubernetes Deployments
+- Three application replicas
 - NodePort service
-- Application scaling with multiple replicas
-- Kubernetes self-healing
+- Rolling updates
+- Readiness probes
+- Liveness probes
+- Automatic container restart after failed health checks
+- Pod replacement and desired-state reconciliation
+- CPU and memory resource management
 - Git version control
 - GitHub Actions CI
-- Automated Docker image build
-- Docker image publishing to GHCR
+- GitHub Container Registry
+- Automated Docker image build and publishing
+
+---
 
 ## 📚 What I Learned
 
-Through this project, I gained practical experience with Docker containerization, Kubernetes deployments, K3s, GitHub Actions, container registries, application scaling, and basic DevOps workflow automation.
+Through this project, I gained practical experience with containerization and Kubernetes-based application deployment.
+
+I learned how to build and run Docker containers, deploy applications using K3s, manage multiple replicas, expose applications through Kubernetes services, perform rolling updates, configure health checks, manage container resources, and observe Kubernetes maintaining the desired application state.
+
+I also gained experience using GitHub Actions and GitHub Container Registry as part of a basic DevOps CI workflow.
